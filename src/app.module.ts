@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { WorkspacesModule } from './workspaces/workspaces.module';
 import { ChannelsModule } from './channels/channels.module';
 import { DmsModule } from './dms/dms.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -17,6 +18,21 @@ import { DmsModule } from './dms/dms.module';
     WorkspacesModule,
     ChannelsModule,
     DmsModule,
+    TypeOrmModule.forRoot({
+      port: 3306,
+      type: 'mariadb',
+      host: 'sukwoo.kr',
+      username: process.env.DB_USERNAME,
+      database: process.env.DB_DATABASE,
+      password: process.env.DB_PASSWORD,
+      autoLoadEntities: true,
+      entities: ['entities/*.ts'],
+      migrations: [__dirname + '/migrations/*.ts'],
+      charset: 'utf8mb4_general_ci',
+      synchronize: false,
+      logging: true,
+      keepConnectionAlive: true,
+    }),
   ],
   controllers: [AppController],
   providers: [
