@@ -9,6 +9,14 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
 import { ChannelsModule } from './channels/channels.module';
 import { DmsModule } from './dms/dms.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Channelchats } from './entities/Channelchats';
+import { Channels } from './entities/Channels';
+import { Users } from './entities/Users';
+import { Channelmembers } from './entities/Channelmembers';
+import { Dms } from './entities/Dms';
+import { Mentions } from './entities/Mentions';
+import { Workspacemembers } from './entities/Workspacemembers';
+import { Workspaces } from './entities/Workspaces';
 
 @Module({
   imports: [
@@ -26,7 +34,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.DB_DATABASE,
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
-      entities: ['entities/*.ts'],
+      entities: [
+        Users,
+        Channels,
+        Channelchats,
+        Channelmembers,
+        Dms,
+        Mentions,
+        Workspacemembers,
+        Workspaces,
+      ],
       migrations: [__dirname + '/migrations/*.ts'],
       charset: 'utf8mb4_general_ci',
       synchronize: false,

@@ -31,6 +31,7 @@
     "cross-env": "^7.0.3",
     "mariadb": "^3.2.2",
     "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
     "nest-morgan": "^2.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",

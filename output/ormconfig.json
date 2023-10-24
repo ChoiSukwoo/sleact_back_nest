@@ -1,7 +1,7 @@
 [
   {
     "name": "default",
-    "type": "mysql",
+    "type": "mariadb",
     "host": "sukwoo.kr",
     "port": 3306,
     "username": "sleact",
