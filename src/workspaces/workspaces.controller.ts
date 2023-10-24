@@ -1,7 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger'; // Swagger의 ApiOperation 추가
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger'; // Swagger의 ApiOperation 추가
+import { LoggedInGuard } from 'src/auth/logged-in.guard';
 
 @ApiTags('Workspaces')
+@ApiCookieAuth('connect.sid')
+@UseGuards(LoggedInGuard)
 @Controller('api/workspaces')
 export class WorkspacesController {
   @ApiOperation({

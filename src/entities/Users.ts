@@ -37,7 +37,7 @@ export class Users {
   })
   nickname: string;
 
-  @Column('varchar', { name: 'password', length: 100 })
+  @Column('varchar', { name: 'password', length: 100, select: false })
   @ApiProperty({
     example: 'hashed_password',
     description: '사용자 비밀번호',

@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  UnauthorizedException,
-  Injectable,
-} from '@nestjs/common';
+import { UnauthorizedException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entities/Users';
 import { Repository } from 'typeorm';

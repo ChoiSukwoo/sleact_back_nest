@@ -1,7 +1,18 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { LoggedInGuard } from 'src/auth/logged-in.guard';
 
 @ApiTags('DM')
+@ApiCookieAuth('connect.sid')
+@UseGuards(LoggedInGuard)
 @Controller('api/workspaces/:url/dms')
 export class DmsController {
   @ApiOperation({
