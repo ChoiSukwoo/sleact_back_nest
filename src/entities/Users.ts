@@ -6,11 +6,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger'; // Import the ApiProperty decorator
-import { Channelchats } from './Channelchats';
-import { Channelmembers } from './Channelmembers';
+import { ChannelChats } from './ChannelChats';
+import { ChannelMembers } from './ChannelMembers';
 import { Dms } from './Dms';
 import { Mentions } from './Mentions';
-import { Workspacemembers } from './Workspacemembers';
+import { WorkspaceMembers } from './WorkspaceMembers';
 import { Workspaces } from './Workspaces';
 
 @Index('email', ['email'], { unique: true })
@@ -57,11 +57,11 @@ export class Users {
   @Column('datetime', { name: 'deletedAt', nullable: true })
   deletedAt: Date | null;
 
-  @OneToMany(() => Channelchats, (channelchats) => channelchats.user)
-  channelchats: Channelchats[];
+  @OneToMany(() => ChannelChats, (channelchats) => channelchats.user)
+  channelchats: ChannelChats[];
 
-  @OneToMany(() => Channelmembers, (channelmembers) => channelmembers.user)
-  channelmembers: Channelmembers[];
+  @OneToMany(() => ChannelMembers, (channelmembers) => channelmembers.user)
+  channelMembers: ChannelMembers[];
 
   @OneToMany(() => Dms, (dms) => dms.receiver)
   dms: Dms[];
@@ -76,10 +76,10 @@ export class Users {
   mentions2: Mentions[];
 
   @OneToMany(
-    () => Workspacemembers,
+    () => WorkspaceMembers,
     (workspacemembers) => workspacemembers.user,
   )
-  workspacemembers: Workspacemembers[];
+  workspaceMembers: WorkspaceMembers[];
 
   @OneToMany(() => Workspaces, (workspaces) => workspaces.owner)
   workspaces: Workspaces[];

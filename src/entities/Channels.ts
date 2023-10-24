@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger'; // Import the ApiProperty decorator
-import { Channelchats } from './Channelchats';
-import { Channelmembers } from './Channelmembers';
+import { ChannelChats } from './ChannelChats';
+import { ChannelMembers } from './ChannelMembers';
 import { Workspaces } from './Workspaces';
 
 @Index('WorkspaceId', ['workspaceId'], {})
@@ -54,11 +54,11 @@ export class Channels {
   })
   workspaceId: number | null;
 
-  @OneToMany(() => Channelchats, (channelchats) => channelchats.channel)
-  channelchats: Channelchats[];
+  @OneToMany(() => ChannelChats, (channelchats) => channelchats.channel)
+  channelchats: ChannelChats[];
 
-  @OneToMany(() => Channelmembers, (channelmembers) => channelmembers.channel)
-  channelmembers: Channelmembers[];
+  @OneToMany(() => ChannelMembers, (channelmembers) => channelmembers.channel)
+  channelmembers: ChannelMembers[];
 
   @ManyToOne(() => Workspaces, (workspaces) => workspaces.channels, {
     onDelete: 'SET NULL',

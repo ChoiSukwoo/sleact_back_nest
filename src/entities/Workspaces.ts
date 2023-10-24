@@ -11,7 +11,7 @@ import { ApiProperty } from '@nestjs/swagger'; // Import the ApiProperty decorat
 import { Channels } from './Channels';
 import { Dms } from './Dms';
 import { Mentions } from './Mentions';
-import { Workspacemembers } from './Workspacemembers';
+import { WorkspaceMembers } from './WorkspaceMembers';
 import { Users } from './Users';
 
 @Index('url', ['url'], { unique: true })
@@ -68,10 +68,10 @@ export class Workspaces {
   mentions: Mentions[];
 
   @OneToMany(
-    () => Workspacemembers,
+    () => WorkspaceMembers,
     (workspacemembers) => workspacemembers.workspace,
   )
-  workspacemembers: Workspacemembers[];
+  workspacemembers: WorkspaceMembers[];
 
   @ManyToOne(() => Users, (users) => users.workspaces, {
     onDelete: 'SET NULL',

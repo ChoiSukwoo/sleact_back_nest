@@ -7,7 +7,7 @@ import { Channels } from './Channels';
 @Index('IDX_3446cc443ce59a7f7ae62acc16', ['userId'], {})
 @Index('IDX_e53905ed6170fb65083051881e', ['channelId'], {})
 @Entity('channelmembers', { schema: 'sleact' })
-export class Channelmembers {
+export class ChannelMembers {
   @Column('int', { primary: true, name: 'ChannelId' })
   @ApiProperty({ example: 123, description: '채널의 ID', required: true })
   channelId: number;
@@ -28,7 +28,7 @@ export class Channelmembers {
   })
   updatedAt: Date;
 
-  @ManyToOne(() => Users, (users) => users.channelmembers, {
+  @ManyToOne(() => Users, (users) => users.channelMembers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })

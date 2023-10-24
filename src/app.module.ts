@@ -9,13 +9,13 @@ import { WorkspacesModule } from './workspaces/workspaces.module';
 import { ChannelsModule } from './channels/channels.module';
 import { DmsModule } from './dms/dms.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Channelchats } from './entities/Channelchats';
+import { ChannelChats } from './entities/ChannelChats';
 import { Channels } from './entities/Channels';
 import { Users } from './entities/Users';
-import { Channelmembers } from './entities/Channelmembers';
+import { ChannelMembers } from './entities/ChannelMembers';
 import { Dms } from './entities/Dms';
 import { Mentions } from './entities/Mentions';
-import { Workspacemembers } from './entities/Workspacemembers';
+import { WorkspaceMembers } from './entities/WorkspaceMembers';
 import { Workspaces } from './entities/Workspaces';
 import { AuthModule } from './auth/auth.module';
 
@@ -39,11 +39,11 @@ import { AuthModule } from './auth/auth.module';
       entities: [
         Users,
         Channels,
-        Channelchats,
-        Channelmembers,
+        ChannelChats,
+        ChannelMembers,
         Dms,
         Mentions,
-        Workspacemembers,
+        WorkspaceMembers,
         Workspaces,
       ],
       migrations: [__dirname + '/migrations/*.ts'],

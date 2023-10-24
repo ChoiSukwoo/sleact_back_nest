@@ -13,7 +13,7 @@ import { Users } from './Users';
 @Index('ChannelId', ['channelId'], {})
 @Index('UserId', ['userId'], {})
 @Entity('channelchats', { schema: 'sleact' })
-export class Channelchats {
+export class ChannelChats {
   @PrimaryGeneratedColumn({ type: 'int', name: 'id' })
   @ApiProperty({ example: 1, description: '채널 채팅의 ID', required: true })
   id: number;

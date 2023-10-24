@@ -7,7 +7,7 @@ import { Workspaces } from './Workspaces';
 @Index('IDX_1f3af49b8195937f52d3a66e56', ['userId'], {})
 @Index('IDX_77afc26dfe5a8633e6ce35eaa4', ['workspaceId'], {})
 @Entity('workspacemembers', { schema: 'sleact' })
-export class Workspacemembers {
+export class WorkspaceMembers {
   @Column('int', { primary: true, name: 'WorkspaceId' })
   @ApiProperty({ example: 1, description: '워크스페이스의 ID', required: true })
   workspaceId: number;
@@ -25,7 +25,7 @@ export class Workspacemembers {
   @Column('datetime', { name: 'loggedInAt', nullable: true })
   loggedInAt: Date | null;
 
-  @ManyToOne(() => Users, (users) => users.workspacemembers, {
+  @ManyToOne(() => Users, (users) => users.workspaceMembers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
