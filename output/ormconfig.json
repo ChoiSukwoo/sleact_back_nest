@@ -6,7 +6,7 @@
     "port": 3306,
     "username": "sleact",
     "password": "~+kmisB1[@l1&FH",
-    "database": "",
+    "database": "sleact",
     "synchronize": false,
     "entities": ["entities/*.js"]
   }
