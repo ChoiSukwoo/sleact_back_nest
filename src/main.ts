@@ -5,6 +5,7 @@ import { HttpExceptionFilter } from './http-exception.filter';
 import { ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import passport from 'passport';
 
 declare const module: any;
 
@@ -23,6 +24,8 @@ async function bootstrap() {
       },
     }),
   );
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.enableCors({
     origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
