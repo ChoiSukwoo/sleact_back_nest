@@ -18,6 +18,7 @@ import { Mentions } from './entities/Mentions';
 import { WorkspaceMembers } from './entities/WorkspaceMembers';
 import { Workspaces } from './entities/Workspaces';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -49,9 +50,10 @@ import { AuthModule } from './auth/auth.module';
       migrations: [__dirname + '/migrations/*.ts'],
       charset: 'utf8mb4_general_ci',
       synchronize: false,
-      logging: true,
+      logging: process.env.NODE_ENV === 'prod',
       keepConnectionAlive: true,
     }),
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [

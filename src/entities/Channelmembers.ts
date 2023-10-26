@@ -28,6 +28,9 @@ export class ChannelMembers {
   })
   updatedAt: Date;
 
+  @Column('datetime', { name: 'deletedAt', nullable: true })
+  deletedAt: Date | null;
+
   @ManyToOne(() => Users, (users) => users.channelMembers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

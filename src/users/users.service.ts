@@ -1,20 +1,19 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entities/Users';
-import { Repository, DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
 import { ChannelMembers } from 'src/entities/ChannelMembers';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Workspaces } from 'src/entities/Workspaces';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
-    @InjectRepository(WorkspaceMembers)
-    private workspaceMemberRepository: Repository<WorkspaceMembers>,
-    @InjectRepository(ChannelMembers)
-    private channelMemberRepository: Repository<ChannelMembers>,
+    @InjectRepository(Workspaces)
+    private workspaceRepository: Repository<Workspaces>,
     private dataSource: DataSource,
   ) {}
 

@@ -3,6 +3,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -79,4 +80,7 @@ export class Workspaces {
   })
   @JoinColumn([{ name: 'OwnerId', referencedColumnName: 'id' }])
   owner: Users;
+
+  @ManyToMany(() => Users, (users) => users.workspaces)
+  members: Users[];
 }

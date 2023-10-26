@@ -2,6 +2,8 @@ import {
   Column,
   Entity,
   Index,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -12,6 +14,7 @@ import { Dms } from './Dms';
 import { Mentions } from './Mentions';
 import { WorkspaceMembers } from './WorkspaceMembers';
 import { Workspaces } from './Workspaces';
+import { Channels } from './Channels';
 
 @Index('email', ['email'], { unique: true })
 @Index('IDX_97672ac88f789774dd47f7c8be', ['email'], { unique: true })
@@ -82,5 +85,33 @@ export class Users {
   workspaceMembers: WorkspaceMembers[];
 
   @OneToMany(() => Workspaces, (workspaces) => workspaces.owner)
+  OwnedWorkspaces: Workspaces[];
+
+  @ManyToMany(() => Workspaces, (workspaces) => workspaces.members)
+  @JoinTable({
+    name: 'workspacemembers',
+    joinColumn: {
+      name: 'UserId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'WorkspaceId',
+      referencedColumnName: 'id',
+    },
+  })
   workspaces: Workspaces[];
+
+  @ManyToMany(() => Channels, (channels) => channels.members)
+  @JoinTable({
+    name: 'channelmembers',
+    joinColumn: {
+      name: 'UserId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'ChannelId',
+      referencedColumnName: 'id',
+    },
+  })
+  channels: Channels[];
 }

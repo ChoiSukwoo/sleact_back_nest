@@ -3,6 +3,7 @@ import {
   Entity,
   Index,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -11,6 +12,7 @@ import { ApiProperty } from '@nestjs/swagger'; // Import the ApiProperty decorat
 import { ChannelChats } from './ChannelChats';
 import { ChannelMembers } from './ChannelMembers';
 import { Workspaces } from './Workspaces';
+import { Users } from './Users';
 
 @Index('WorkspaceId', ['workspaceId'], {})
 @Entity('channels', { schema: 'sleact' })
@@ -46,6 +48,9 @@ export class Channels {
   @Column('datetime', { name: 'updatedAt', default: () => 'current_timestamp' })
   updatedAt: Date;
 
+  @Column('datetime', { name: 'deletedAt', nullable: true })
+  deletedAt: Date | null;
+
   @Column('int', { name: 'WorkspaceId', nullable: true })
   @ApiProperty({
     example: 123,
@@ -59,6 +64,9 @@ export class Channels {
 
   @OneToMany(() => ChannelMembers, (channelmembers) => channelmembers.channel)
   channelmembers: ChannelMembers[];
+
+  @ManyToMany(() => Users, (users) => users.channels)
+  members: Users[];
 
   @ManyToOne(() => Workspaces, (workspaces) => workspaces.channels, {
     onDelete: 'SET NULL',

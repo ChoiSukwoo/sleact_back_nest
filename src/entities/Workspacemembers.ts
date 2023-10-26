@@ -25,6 +25,9 @@ export class WorkspaceMembers {
   @Column('datetime', { name: 'loggedInAt', nullable: true })
   loggedInAt: Date | null;
 
+  @Column('datetime', { name: 'deletedAt', nullable: true })
+  deletedAt: Date | null;
+
   @ManyToOne(() => Users, (users) => users.workspaceMembers, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

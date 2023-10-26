@@ -3,7 +3,6 @@ import { PassportSerializer } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from 'src/entities/Users';
 import { Repository } from 'typeorm';
-import { AuthService } from './auth.service';
 
 @Injectable()
 export class LocalSerializer extends PassportSerializer {
@@ -23,7 +22,7 @@ export class LocalSerializer extends PassportSerializer {
       .findOneOrFail({
         where: { id: +userId },
         select: ['id', 'email', 'nickname'],
-        relations: ['Workspaces'],
+        relations: ['workspaces'],
       })
       .then((user) => {
         console.log('user', user);
