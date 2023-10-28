@@ -20,7 +20,7 @@ export class ChannelsService {
     @InjectRepository(ChannelChats)
     private channelChatsRepository: Repository<ChannelChats>,
     @InjectRepository(Users)
-    private usersRepository: Repository<Users>, // private readonly eventsGateway: EventsGateway,
+    private usersRepository: Repository<Users>,
     private dataSource: DataSource,
     private readonly eventsGateway: EventsGateway,
   ) {}
