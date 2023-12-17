@@ -5,6 +5,8 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { classValidatorErrorDto } from './common/dto/classValidator.dto';
+import { ExceptionErrorDto } from './common/dto/ExceptionError.dto';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -15,31 +17,46 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const err = exception.getResponse() as
       | string
       | { message: any; statusCode: number }
-      | { error: string; statusCode: 400; message: string[] };
+      | classValidatorErrorDto;
 
     //class-validator
-    if (typeof err !== 'string' && err.statusCode === 400) {
-      return response.status(status).json({
+    if (isClassValidatorError(err)) {
+      const error = err as classValidatorErrorDto;
+      return response.status(error.statusCode).json({
         success: false,
-        code: err.statusCode,
-        data: err.message,
-      });
+        statusCode: error.statusCode,
+        message: error.message,
+      } as ExceptionErrorDto);
     }
 
     //HttpException
     if (typeof err == 'string') {
       return response.status(status).json({
         success: false,
-        code: status,
-        data: err,
-      });
+        statusCode: status,
+        message: [err],
+      } as ExceptionErrorDto);
     }
 
     //BadRequestException, UnauthorizedException
-    return response.status(status).json({
-      success: false,
-      code: status,
-      data: err.message,
-    });
+    if (typeof err.message == 'string') {
+      return response.status(status).json({
+        success: false,
+        code: status,
+        msg: [err.message],
+      });
+    }
+
+    console.log('확인되지 않은 Error 타입 : ', err);
   }
+}
+
+function isClassValidatorError(obj: any) {
+  return (
+    typeof obj !== 'string' &&
+    typeof obj.error === 'string' &&
+    obj.statusCode === 400 &&
+    Array.isArray(obj.message) &&
+    obj.message.every((m) => typeof m === 'string')
+  );
 }
