@@ -1,19 +1,21 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Users } from 'src/entities/Users';
 import { DataSource, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
 import { ChannelMembers } from 'src/entities/ChannelMembers';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Workspaces } from 'src/entities/Workspaces';
+import { LastChannelRead } from 'src/entities/LastChannelRead';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(Users)
-    private userRepository: Repository<Users>,
-    @InjectRepository(Workspaces)
-    private workspaceRepository: Repository<Workspaces>,
+    @InjectRepository(LastChannelRead)
+    private lastReadRepository: Repository<LastChannelRead>,
     private dataSource: DataSource,
   ) {}
 
@@ -68,5 +70,79 @@ export class UsersService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  async setChannelLastRead(
+    uid: number,
+    workspaceId: number,
+    channelId: number,
+    time: Date,
+  ) {
+    const record = await this.lastReadRepository.findOne({
+      where: { uid, workspaceId, channelId },
+    });
+
+    if (record) {
+      record.time = time;
+      return this.lastReadRepository.save(record);
+    } else {
+      const newRecord = this.lastReadRepository.create({
+        uid,
+        workspaceId,
+        channelId,
+        time,
+      });
+      return this.lastReadRepository.save(newRecord);
+    }
+  }
+
+  async getChannelLastRead(
+    uid: number,
+    workspaceId: number,
+    channelId: number,
+  ) {
+    const record = await this.lastReadRepository.findOne({
+      where: { uid, workspaceId, channelId },
+    });
+
+    if (!record) {
+      throw new NotFoundException('Record not found');
+    }
+    return record;
+  }
+
+  async setDmLastRead(
+    uid: number,
+    workspaceId: number,
+    channelId: number,
+    time: Date,
+  ) {
+    const record = await this.lastReadRepository.findOne({
+      where: { uid, workspaceId, channelId },
+    });
+
+    if (record) {
+      record.time = time;
+      return this.lastReadRepository.save(record);
+    } else {
+      const newRecord = this.lastReadRepository.create({
+        uid,
+        workspaceId,
+        channelId,
+        time,
+      });
+      return this.lastReadRepository.save(newRecord);
+    }
+  }
+
+  async getDmLastRead(uid: number, workspaceId: number, channelId: number) {
+    const record = await this.lastReadRepository.findOne({
+      where: { uid, workspaceId, channelId },
+    });
+
+    if (!record) {
+      throw new NotFoundException('Record not found');
+    }
+    return record;
   }
 }

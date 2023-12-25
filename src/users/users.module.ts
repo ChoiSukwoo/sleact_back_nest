@@ -6,6 +6,8 @@ import { Users } from 'src/entities/Users';
 import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
 import { ChannelMembers } from 'src/entities/ChannelMembers';
 import { Workspaces } from 'src/entities/Workspaces';
+import { LastChannelRead } from 'src/entities/LastChannelRead';
+import { LastDmRead } from 'src/entities/LastDmRead';
 
 @Module({
   imports: [
@@ -14,6 +16,8 @@ import { Workspaces } from 'src/entities/Workspaces';
       WorkspaceMembers,
       ChannelMembers,
       Workspaces,
+      LastChannelRead,
+      LastDmRead,
     ]),
   ],
   providers: [UsersService],

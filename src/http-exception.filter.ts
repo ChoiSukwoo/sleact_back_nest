@@ -42,9 +42,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (typeof err.message == 'string') {
       return response.status(status).json({
         success: false,
-        code: status,
-        msg: [err.message],
-      });
+        statusCode: status,
+        message: [err.message],
+      } as ExceptionErrorDto);
     }
 
     console.log('확인되지 않은 Error 타입 : ', err);
