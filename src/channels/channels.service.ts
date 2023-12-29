@@ -47,14 +47,19 @@ export class ChannelsService {
   }
 
   async getWorkspaceChannel(url: string, name: string) {
-    return this.channelsRepository
+    console.log('url : ', url, '\n name : ', name);
+
+    const result = await this.channelsRepository
       .createQueryBuilder('channels')
       .innerJoin('channels.workspace', 'workspace', 'workspace.url = :url', {
         url,
       })
       .where('channels.name = :name', { name })
-      .where('channels.deletedAt IS NULL')
+      .andWhere('channels.deletedAt IS NULL')
       .getOne();
+    console.log('result : ', result);
+
+    return result;
   }
 
   //채널생성
@@ -145,6 +150,7 @@ export class ChannelsService {
     name: string,
     perPage: number,
     page: number,
+    skip: number = 0,
   ) {
     console.log('perPage : ', perPage, 'page : ', page);
 
@@ -159,7 +165,7 @@ export class ChannelsService {
       .innerJoinAndSelect('channelChats.user', 'user')
       .orderBy('channelChats.createdAt', 'DESC')
       .take(perPage)
-      .skip(perPage * (page - 1))
+      .skip(perPage * (page - 1) + skip)
       .getMany();
   }
 
@@ -204,10 +210,21 @@ export class ChannelsService {
       channelId: channel.id,
     });
 
+    const chatWithUser = await this.channelChatsRepository.findOne({
+      where: { id: savedChat.id },
+      relations: ['user', 'channel'],
+    });
+
+    console.log(
+      'chat : ',
+      chatWithUser,
+      '\n to : ',
+      `/ws-${url}-${channel.id}`,
+    );
+
     this.eventsGateway.server
-      // .of(`/ws-${url}`)
       .to(`/ws-${url}-${channel.id}`)
-      .emit('message', savedChat);
+      .emit('message', chatWithUser);
   }
 
   async createWorkspaceChannelImages(
@@ -238,7 +255,6 @@ export class ChannelsService {
       });
 
       this.eventsGateway.server
-        // .of(`/ws-${url}`)
         .to(`/ws-${url}-${channel.id}`)
         .emit('message', savedChat);
     }

@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Response,
   UseGuards,
@@ -22,8 +23,6 @@ import { LoggedInGuard } from 'src/auth/logged-in.guard';
 import {
   CreateChannelLastReadDto,
   CreateDmLastReadDto,
-  RoadChannelLastReadDto,
-  RoadDmLastReadDto,
 } from './dto/create.lastread.dto';
 import { Users } from 'src/entities/Users';
 
@@ -82,59 +81,49 @@ export class UsersController {
     return res.send('ok');
   }
 
-  @Post('/channel/lastread')
+  @Post('/workspace/:workspace/channel/:channel/lastread')
   async setChannelLastReadTime(
     @User() user: Users,
+    @Param() param,
     @Body() body: CreateChannelLastReadDto,
   ) {
-    console.log('user : ', user);
-    console.log('body : ', body);
-
     return await this.usersService.setChannelLastRead(
       user.id,
-      body.workspaceId,
-      body.channelId,
-      new Date(body.time),
+      param.workspace,
+      +param.channel,
+      +body.time,
     );
   }
 
-  @Get('/channel/lastread')
-  async getChannelReadLastTime(
-    @User() user: Users,
-    @Body() body: RoadChannelLastReadDto,
-  ) {
+  @Get('/workspace/:workspace/channel/:channel/lastread')
+  async getChannelReadLastTime(@User() user: Users, @Param() param) {
     return await this.usersService.getChannelLastRead(
       user.id,
-      body.workspaceId,
-      body.channelId,
+      param.workspace,
+      +param.channel,
     );
   }
 
-  @Post('/dm/lastread')
+  @Post('/workspace/:workspace/dm/:other/lastread')
   async setDmLastReadTime(
     @User() user: Users,
+    @Param() param,
     @Body() body: CreateDmLastReadDto,
   ) {
-    console.log('user : ', user);
-    console.log('body : ', body);
-
     return await this.usersService.setDmLastRead(
       user.id,
-      body.workspaceId,
-      body.otherId,
-      new Date(body.time),
+      param.workspace,
+      +param.other,
+      +body.time,
     );
   }
 
-  @Get('/dm/lastread')
-  async getDmLastReadTime(
-    @User() user: Users,
-    @Body() body: RoadDmLastReadDto,
-  ) {
+  @Get('/workspace/:workspace/dm/:other/lastread')
+  async getDmLastReadTime(@User() user: Users, @Param() param) {
     return await this.usersService.getDmLastRead(
       user.id,
-      body.workspaceId,
-      body.otherId,
+      param.workspace,
+      +param.other,
     );
   }
 }

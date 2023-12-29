@@ -72,8 +72,9 @@ export class ChannelsController {
     return this.channelService.getWorkspaceChannelChats(
       param.url,
       param.name,
-      +query.perPage,
+      +query.perpage,
       +query.page,
+      +query.skip,
     );
   }
   //----------------------------
@@ -92,8 +93,6 @@ export class ChannelsController {
   @ApiOperation({ summary: ':url 내부의 :name의 채팅을 저장' })
   @Post(':name/chats')
   postChat(@User() user: Users, @Body() body: CreateChatDto, @Param() param) {
-    console.log(param.url, param.name);
-    console.log(body.content);
     return this.channelService.createWorkspaceChannelChats(
       param.url,
       param.name,

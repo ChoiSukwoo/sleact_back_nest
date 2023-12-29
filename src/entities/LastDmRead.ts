@@ -11,13 +11,13 @@ export class LastDmRead {
   @ApiProperty({ example: 123, description: '유저의 ID', required: true })
   uid: number;
 
-  @Column('int', { name: 'workspaceId' })
+  @Column('varchar', { name: 'workspaceName', length: 30 })
   @ApiProperty({
-    example: 456,
-    description: '워크스페이스의 ID',
+    example: 'general',
+    description: '워크스페이스의 이름',
     required: true,
   })
-  workspaceId: number;
+  workspaceName: string;
 
   @Column('int', { name: 'otherId' })
   @ApiProperty({
@@ -27,11 +27,11 @@ export class LastDmRead {
   })
   otherId: number;
 
-  @Column('datetime', { name: 'time', default: () => 'CURRENT_TIMESTAMP' })
+  @Column('bigint', { name: 'time', default: () => 'UNIX_TIMESTAMP()' })
   @ApiProperty({
-    example: '2023-01-01T00:00:00Z',
-    description: '마지막으로 읽은 시간',
+    example: 1672531200,
+    description: '마지막으로 읽은 시간 (Unix Timestamp)',
     required: true,
   })
-  time: Date;
+  time: number;
 }
