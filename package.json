@@ -12,14 +12,14 @@
     "start:dev": "cross-env NODE_ENV=dev nest build --webpack --webpackPath webpack-hmr.config.js --watch",
     "start:dev-backup": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "cross-env NODE_ENV=prod node dist/main ",
+    "start:prod": "cross-env NODE_ENV=prod node dist/src/main.js",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "docker" : "docker build . -t woo98070/slack-back-nest:1.0"
+    "docker" : "docker build . -t woo98070/slack-back-nest:1.4"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

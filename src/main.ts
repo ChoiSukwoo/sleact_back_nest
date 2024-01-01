@@ -30,7 +30,7 @@ async function bootstrap() {
   app.use(passport.session());
 
   app.useStaticAssets(
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'prod'
       ? path.join(__dirname, '..', '..', 'uploads')
       : path.join(__dirname, '..', 'uploads'),
     {
@@ -38,7 +38,7 @@ async function bootstrap() {
     },
   );
   app.useStaticAssets(
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV === 'prod'
       ? path.join(__dirname, '..', '..', 'public')
       : path.join(__dirname, '..', 'public'),
     {
@@ -46,18 +46,29 @@ async function bootstrap() {
     },
   );
 
-  if (process.env.NODE_ENV === 'prod') {
-    app.enableCors({
-      origin: 'http://localhost:5173',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true,
-    });
-  } else {
-    app.enableCors({
-      origin: true,
-      credentials: true,
-    });
-  }
+  app.enableCors({
+    origin: [
+      'http://localhost:5173',
+      'https://sleact-front-react-choisukwoo.vercel.app/',
+      'https://slack.sukwoo.kr/',
+      'https://sleact-front-react.vercel.app/',
+      'https://sleact-front-react-git-main-choisukwoo.vercel.app/',
+      'http://sleact-front-react-choisukwoo.vercel.app/',
+      'http://slack.sukwoo.kr/',
+      'http://sleact-front-react.vercel.app/',
+      'http://sleact-front-react-git-main-choisukwoo.vercel.app/',
+      'https://sleact-front-react-choisukwoo.vercel.app',
+      'https://slack.sukwoo.kr',
+      'https://sleact-front-react.vercel.app',
+      'https://sleact-front-react-git-main-choisukwoo.vercel.app',
+      'http://sleact-front-react-choisukwoo.vercel.app',
+      'http://slack.sukwoo.kr',
+      'http://sleact-front-react.vercel.app',
+      'http://sleact-front-react-git-main-choisukwoo.vercel.app',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
 
   const port = process.env.PORT || 3000;
 
@@ -79,6 +90,7 @@ async function bootstrap() {
   await app.listen(port);
 
   console.log(`listening on port ${port}`);
+  console.log(`Running in ${process.env.NODE_ENV}`);
 }
 
 bootstrap();
