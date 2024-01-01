@@ -1,6 +1,6 @@
 import { PickType } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
-import { ChannelChats } from 'src/entities/ChannelChats';
+import { ChannelChats } from 'src/entities/Channelchats';
 import { Channels } from 'src/entities/Channels';
 import { Users } from 'src/entities/Users';
 

@@ -9,8 +9,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger'; // Import the ApiProperty decorator
-import { ChannelChats } from './ChannelChats';
-import { ChannelMembers } from './ChannelMembers';
+import { ChannelChats } from './Channelchats';
+import { ChannelMembers } from './Channelmembers';
 import { Workspaces } from './Workspaces';
 import { Users } from './Users';
 

@@ -12,7 +12,7 @@ import { ApiProperty } from '@nestjs/swagger'; // Import the ApiProperty decorat
 import { Channels } from './Channels';
 import { Dms } from './Dms';
 import { Mentions } from './Mentions';
-import { WorkspaceMembers } from './WorkspaceMembers';
+import { WorkspaceMembers } from './Workspacemembers';
 import { Users } from './Users';
 
 @Index('url', ['url'], { unique: true })

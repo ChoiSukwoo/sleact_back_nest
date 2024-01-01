@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChannelMembers } from 'src/entities/ChannelMembers';
+import { ChannelMembers } from 'src/entities/Channelmembers';
 import { Channels } from 'src/entities/Channels';
 import { Users } from 'src/entities/Users';
-import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
+import { WorkspaceMembers } from 'src/entities/Workspacemembers';
 import { Workspaces } from 'src/entities/Workspaces';
 import { DataSource, Repository } from 'typeorm';
 

@@ -2,8 +2,8 @@ import { Injectable, ForbiddenException } from '@nestjs/common';
 import { Users } from 'src/entities/Users';
 import { DataSource, Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { WorkspaceMembers } from 'src/entities/WorkspaceMembers';
-import { ChannelMembers } from 'src/entities/ChannelMembers';
+import { WorkspaceMembers } from 'src/entities/Workspacemembers';
+import { ChannelMembers } from 'src/entities/Channelmembers';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LastChannelRead } from 'src/entities/LastChannelRead';
 
