@@ -67,13 +67,28 @@ export class DmsService {
     });
 
     console.log('dmWithSender : ', dmWithSender);
-    if (onlineMap[`/ws-${workspace.url}`]) {
-      const receiverSocketId = getKeyByValue(
-        onlineMap[`/ws-${workspace.url}`],
-        Number(id),
-      );
 
+    if (!onlineMap[`/ws-${workspace.url}`]) {
+      return;
+    }
+
+    const receiverSocketId = getKeyByValue(
+      onlineMap[`/ws-${workspace.url}`],
+      id,
+    );
+
+    const senderSocketId = getKeyByValue(
+      onlineMap[`/ws-${workspace.url}`],
+      myId,
+    );
+
+    if (receiverSocketId) {
       const nsp = namespaceMap[`/ws-${url}`][receiverSocketId];
+      nsp.emit('dm', dmWithSender);
+    }
+
+    if (senderSocketId) {
+      const nsp = namespaceMap[`/ws-${url}`][senderSocketId];
       nsp.emit('dm', dmWithSender);
     }
   }
@@ -101,13 +116,27 @@ export class DmsService {
         relations: ['sender'],
       });
 
-      if (onlineMap[`/ws-${workspace.url}`]) {
-        const receiverSocketId = getKeyByValue(
-          onlineMap[`/ws-${workspace.url}`],
-          Number(id),
-        );
+      if (!onlineMap[`/ws-${workspace.url}`]) {
+        return;
+      }
 
+      const receiverSocketId = getKeyByValue(
+        onlineMap[`/ws-${workspace.url}`],
+        id,
+      );
+
+      const senderSocketId = getKeyByValue(
+        onlineMap[`/ws-${workspace.url}`],
+        myId,
+      );
+
+      if (receiverSocketId) {
         const nsp = namespaceMap[`/ws-${url}`][receiverSocketId];
+        nsp.emit('dm', dmWithSender);
+      }
+
+      if (senderSocketId) {
+        const nsp = namespaceMap[`/ws-${url}`][senderSocketId];
         nsp.emit('dm', dmWithSender);
       }
     }
@@ -125,18 +154,5 @@ export class DmsService {
         createdAt: MoreThan(new Date(after)),
       },
     });
-  }
-
-  async testSocket(url: string, id: number) {
-    console.log(`url : /ws-${url}`);
-    if (onlineMap[`/ws-${url}`]) {
-      const receiverSocketId = getKeyByValue(
-        onlineMap[`/ws-${url}`],
-        Number(id),
-      );
-
-      const nsp = namespaceMap[`/ws-${url}`][receiverSocketId];
-      nsp.emit('temp', { message: '테스트' });
-    }
   }
 }
