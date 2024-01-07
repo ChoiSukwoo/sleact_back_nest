@@ -174,8 +174,8 @@ export class WorkspacesService {
     });
   }
 
-  async getWorkspaceMember(url: string, id: number) {
-    return this.userRepository
+  async getWorkspaceMember(url: string, id: number): Promise<any | false> {
+    const member = await this.userRepository
       .createQueryBuilder('user')
       .leftJoin('user.workspaceMembers', 'workspaceMembers')
       .leftJoin('workspaceMembers.workspace', 'workspace')
@@ -183,5 +183,7 @@ export class WorkspacesService {
       .andWhere('workspace.url = :url', { url })
       .andWhere('workspaceMembers.deletedAt IS NULL')
       .getOne();
+
+    return member || false; // 결과가 없으면 false 반환
   }
 }

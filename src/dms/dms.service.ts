@@ -27,49 +27,51 @@ export class DmsService {
     myId: number,
     perPage: number,
     page: number,
+    skip: number = 0,
   ) {
     return this.dmsRepository
       .createQueryBuilder('dms')
       .innerJoinAndSelect('dms.sender', 'sender')
       .innerJoinAndSelect('dms.receiver', 'receiver')
-      .innerJoin('dms.workspace', 'workspace')
-      .where('workspace.url = :url', { url })
-      .andWhere(
+      .innerJoin('dms.workspace', 'workspace', 'workspace.url = :url', { url })
+      .where(
         '((dms.SenderId = :myId AND dms.ReceiverId = :id) OR (dms.ReceiverId = :myId AND dms.SenderId = :id))',
         { id, myId },
       )
       .orderBy('dms.createdAt', 'DESC')
       .take(perPage)
-      .skip(perPage * (page - 1))
+      .skip(perPage * (page - 1) + skip)
       .getMany();
   }
 
   async createWorkspaceDMChats(
     url: string,
-    content: string,
     id: number,
+    content: string,
     myId: number,
   ) {
     const workspace = await this.workspacesRepository.findOne({
       where: { url },
     });
-    const dm = new Dms();
-    dm.senderId = myId;
-    dm.receiverId = id;
-    dm.content = content;
-    dm.workspaceId = workspace.id;
-    const savedDm = await this.dmsRepository.save(dm);
+
+    const savedDm = await this.dmsRepository.save({
+      senderId: myId,
+      receiverId: id,
+      content: content,
+      workspaceId: workspace.id,
+    });
+
     const dmWithSender = await this.dmsRepository.findOne({
       where: { id: savedDm.id },
       relations: ['sender'],
     });
+
     console.log('dmWithSender : ', dmWithSender);
     if (onlineMap[`/ws-${workspace.url}`]) {
       const receiverSocketId = getKeyByValue(
         onlineMap[`/ws-${workspace.url}`],
         Number(id),
       );
-      console.log('receiverSocketId : ', receiverSocketId);
 
       const nsp = namespaceMap[`/ws-${url}`][receiverSocketId];
       nsp.emit('dm', dmWithSender);
@@ -78,24 +80,27 @@ export class DmsService {
 
   async createWorkspaceDMImages(
     url: string,
-    files: Express.Multer.File[],
     id: number,
+    files: Express.Multer.File[],
     myId: number,
   ) {
     const workspace = await this.workspacesRepository.findOne({
       where: { url },
     });
+
     for (let i = 0; i < files.length; i++) {
-      const dm = new Dms();
-      dm.senderId = myId;
-      dm.receiverId = id;
-      dm.content = files[i].path;
-      dm.workspaceId = workspace.id;
-      const savedDm = await this.dmsRepository.save(dm);
+      const savedDm = await this.dmsRepository.save({
+        senderId: myId,
+        receiverId: id,
+        content: files[i].path,
+        workspaceId: workspace.id,
+      });
+
       const dmWithSender = await this.dmsRepository.findOne({
         where: { id: savedDm.id },
         relations: ['sender'],
       });
+
       if (onlineMap[`/ws-${workspace.url}`]) {
         const receiverSocketId = getKeyByValue(
           onlineMap[`/ws-${workspace.url}`],

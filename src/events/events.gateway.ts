@@ -11,7 +11,14 @@ import {
 import { Server, Socket } from 'socket.io';
 import { onlineMap, namespaceMap } from './onlineMap';
 
-@WebSocketGateway({ namespace: /\/ws-.+/ })
+@WebSocketGateway({
+  namespace: /\/ws-.+/,
+  cors: {
+    origin: ['http://localhost:5173', 'https://slack.sukwoo.kr'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  },
+})
 export class EventsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {

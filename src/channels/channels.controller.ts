@@ -5,10 +5,11 @@ import {
   Param,
   Post,
   Query,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/common/decorators/user.decorator';
 import { Users } from 'src/entities/Users';
@@ -18,7 +19,6 @@ import {
   CreateChatDto,
   InviteChannelDto,
 } from './dto/create.channel.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import multer from 'multer';
 import path from 'path';
 import { LoggedInGuard } from 'src/auth/logged-in.guard';
@@ -38,6 +38,7 @@ try {
 export class ChannelsController {
   constructor(private channelService: ChannelsService) {}
 
+  //----------------------- GetAllChannels ----------------------
   @ApiOperation({
     summary: ':url 내부의 내가 속해있는 채널 리스트를 가져옴',
   })
@@ -45,7 +46,8 @@ export class ChannelsController {
   getAllChannels(@User() user: Users, @Param() param) {
     return this.channelService.getWorkspaceChannels(param.url, user.id);
   }
-  //----------------------------
+
+  //----------------------- CreateChannels ----------------------
   @ApiOperation({ summary: ':url 내부에 채널을 생성함' })
   @Post()
   createChannels(
@@ -59,13 +61,15 @@ export class ChannelsController {
       user.id,
     );
   }
-  //----------------------------
+
+  //----------------------- GetSpecificChannel ----------------------
   @ApiOperation({ summary: ':url 내부의 :name 정보를 가져옴' })
   @Get(':name')
   getSpecificChannel(@Param() param) {
     return this.channelService.getWorkspaceChannel(param.url, param.name);
   }
-  //----------------------------
+
+  //---------------------------- GetChatList -----------------------
   @ApiOperation({ summary: ':url 내부의 :name의 채팅을 가져옴' })
   @Get(':name/chats')
   getChats(@Query() query, @Param() param) {
@@ -77,7 +81,8 @@ export class ChannelsController {
       +query.skip,
     );
   }
-  //----------------------------
+
+  //---------------------------- GetUnread -----------------------
   @ApiOperation({
     summary: ':url 내부의 :name의 안 읽은 채팅 유무를 가져옴',
   })
@@ -89,10 +94,11 @@ export class ChannelsController {
       query.after,
     );
   }
-  //----------------------------
+
+  //---------------------------- SaveChat -----------------------
   @ApiOperation({ summary: ':url 내부의 :name의 채팅을 저장' })
   @Post(':name/chats')
-  postChat(@User() user: Users, @Body() body: CreateChatDto, @Param() param) {
+  saveChat(@User() user: Users, @Body() body: CreateChatDto, @Param() param) {
     return this.channelService.createWorkspaceChannelChats(
       param.url,
       param.name,
@@ -100,7 +106,8 @@ export class ChannelsController {
       user.id,
     );
   }
-  //----------------------------
+
+  //---------------------------- SaveChatImg -----------------------
   @ApiOperation({ summary: ':url 내부의 :name의 이미지를 저장' })
   @UseInterceptors(
     FilesInterceptor('image', 10, {
@@ -118,9 +125,9 @@ export class ChannelsController {
   )
   @Post(':name/images')
   postImage(
-    @User() user: Users,
-    @UploadedFile() files: Express.Multer.File[],
     @Param() param,
+    @User() user: Users,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     return this.channelService.createWorkspaceChannelImages(
       param.url,
@@ -130,7 +137,7 @@ export class ChannelsController {
     );
   }
 
-  //------------- getAllMembers(채널 멤버 목록 획득) ----------------------------
+  //---------------------------- getAllMembers(채널 멤버 목록 획득) ----------------------------
   @ApiOperation({ summary: ':url 내부의 :name 멤버 목록을 가져옴' })
   @Get(':name/members')
   getAllMembers(@Param() param) {
@@ -139,7 +146,8 @@ export class ChannelsController {
       param.name,
     );
   }
-  //------------- inviteMembers(멤버 초대) ----------------------------
+
+  //---------------------------- inviteMembers(멤버 초대) ----------------------------
   @ApiOperation({ summary: ':url 내부의 :name로 멤버 초대' })
   @Post(':name/members')
   inviteMembers(@Body() body: InviteChannelDto, @Param() param) {

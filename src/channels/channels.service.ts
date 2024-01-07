@@ -152,8 +152,6 @@ export class ChannelsService {
     page: number,
     skip: number = 0,
   ) {
-    console.log('perPage : ', perPage, 'page : ', page);
-
     return this.channelChatsRepository
       .createQueryBuilder('channelChats')
       .innerJoin('channelChats.channel', 'channel', 'channel.name = :name', {
@@ -199,7 +197,6 @@ export class ChannelsService {
       })
       .where('channel.name = :name', { name })
       .getOne();
-
     if (!channel) {
       throw new NotFoundException('채널 정보를 찾을수 없습니다.');
     }
@@ -215,13 +212,6 @@ export class ChannelsService {
       relations: ['user', 'channel'],
     });
 
-    console.log(
-      'chat : ',
-      chatWithUser,
-      '\n to : ',
-      `/ws-${url}-${channel.id}`,
-    );
-
     this.eventsGateway.server
       .to(`/ws-${url}-${channel.id}`)
       .emit('message', chatWithUser);
@@ -233,8 +223,6 @@ export class ChannelsService {
     files: Express.Multer.File[],
     myId: number,
   ) {
-    console.log(files);
-
     const channel = await this.channelsRepository
       .createQueryBuilder('channel')
       .innerJoin('channel.workspace', 'workspace', 'workspace.url = :url', {
@@ -254,9 +242,14 @@ export class ChannelsService {
         channelId: channel.id,
       });
 
+      const chatWithUser = await this.channelChatsRepository.findOne({
+        where: { id: savedChat.id },
+        relations: ['user', 'channel'],
+      });
+
       this.eventsGateway.server
         .to(`/ws-${url}-${channel.id}`)
-        .emit('message', savedChat);
+        .emit('message', chatWithUser);
     }
   }
 }

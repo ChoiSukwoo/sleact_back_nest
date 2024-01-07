@@ -47,25 +47,7 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: [
-      'http://localhost:5173',
-      'https://sleact-front-react-choisukwoo.vercel.app/',
-      'https://slack.sukwoo.kr/',
-      'https://sleact-front-react.vercel.app/',
-      'https://sleact-front-react-git-main-choisukwoo.vercel.app/',
-      'http://sleact-front-react-choisukwoo.vercel.app/',
-      'http://slack.sukwoo.kr/',
-      'http://sleact-front-react.vercel.app/',
-      'http://sleact-front-react-git-main-choisukwoo.vercel.app/',
-      'https://sleact-front-react-choisukwoo.vercel.app',
-      'https://slack.sukwoo.kr',
-      'https://sleact-front-react.vercel.app',
-      'https://sleact-front-react-git-main-choisukwoo.vercel.app',
-      'http://sleact-front-react-choisukwoo.vercel.app',
-      'http://slack.sukwoo.kr',
-      'http://sleact-front-react.vercel.app',
-      'http://sleact-front-react-git-main-choisukwoo.vercel.app',
-    ],
+    origin: ['http://localhost:5173', 'https://slack.sukwoo.kr'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
